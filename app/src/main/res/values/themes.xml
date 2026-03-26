@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Akatsuki app theme -->
-    <style name="Theme.Akatsuki">
-        <!-- Background and window colors -->
+    <style name="Theme.Akatsuki" parent="android:Theme.Material.NoTitleBar">
         <item name="android:windowBackground">#0A0A0A</item>
         <item name="android:statusBarColor">#0A0A0A</item>
         <item name="android:navigationBarColor">#0A0A0A</item>
-
-        <!-- Remove title bar and action bar -->
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
     </style>
