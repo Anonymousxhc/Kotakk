@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme.Akatsuki" parent="android:Theme.Material.NoTitleBar">
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme using Material3 -->
+    <style name="Theme.Akatsuki" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Background colors -->
         <item name="android:windowBackground">#0A0A0A</item>
         <item name="android:statusBarColor">#0A0A0A</item>
         <item name="android:navigationBarColor">#0A0A0A</item>
+
+        <!-- Optional: remove title bar explicitly -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
     </style>
+
 </resources>
