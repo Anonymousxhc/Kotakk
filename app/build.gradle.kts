@@ -1,3 +1,5 @@
+**build.gradle:**
+```kotlin
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -49,5 +51,6 @@ dependencies {
     implementation(libs.coroutines.android)
     implementation(libs.security.crypto)
     implementation(libs.gson)
+    implementation("androidx.appcompat:appcompat:1.7.0")
     debugImplementation(libs.compose.ui.tooling)
 }
