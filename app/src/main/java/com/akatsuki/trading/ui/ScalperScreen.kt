@@ -32,8 +32,6 @@ import kotlinx.coroutines.launch
 private val INDICES = listOf("NIFTY", "BANKNIFTY", "SENSEX", "FINNIFTY", "MIDCPNIFTY")
 private val NUM_STRIKES_OPTIONS = listOf(5, 10, 15, 20)
 
-// Go version colors: buy = linear-gradient(135deg, #10b981, #059669)
-//                   sell = linear-gradient(135deg, #ef4444, #dc2626)
 private val BuyGradient = Brush.linearGradient(listOf(Color(0xFF10B981), Color(0xFF059669)))
 private val SellGradient = Brush.linearGradient(listOf(Color(0xFFEF4444), Color(0xFFDC2626)))
 
@@ -52,14 +50,13 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
 
     Column(Modifier.fillMaxSize().background(Bg)) {
 
-        // ── Index strip (scrollable chips with spot prices)
+        // ── Index strip
         Row(
             Modifier.fillMaxWidth().background(Bg2)
                 .padding(vertical = 4.dp)
                 .horizontalScroll(rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // HSM connection dot
             Box(
                 Modifier.padding(start = 8.dp, end = 4.dp).size(7.dp)
                     .clip(RoundedCornerShape(4.dp))
@@ -94,7 +91,6 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
                 .padding(horizontal = 6.dp, vertical = 3.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Expiry chips (scrollable)
             Row(
                 Modifier.weight(1f).horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -125,7 +121,6 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
                 }
             }
 
-            // numStrikes chips (5/10/15/20) — right side
             Spacer(Modifier.width(4.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                 NUM_STRIKES_OPTIONS.forEach { n ->
@@ -160,7 +155,7 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
         }
         HorizontalDivider(color = Border, thickness = 1.dp)
 
-        // ── Chain list (takes all remaining space)
+        // ── Chain list
         Box(Modifier.weight(1f)) {
             when (st.instrumentStatus) {
                 InstrumentStatus.LOADING -> Column(Modifier.fillMaxSize(),
@@ -204,7 +199,7 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
             }
         }
 
-        // ── Mobile bar — matches Go's mb-top + mb-btns exactly
+        // ── Mobile bar
         Column(
             Modifier.fillMaxWidth().background(Bg2)
                 .border(width = 1.dp, color = Border, shape = RoundedCornerShape(0.dp))
@@ -218,7 +213,7 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
             val locked = st.safetyLock
             val pnl = st.dayPnl
 
-            // ── mb-top: [strike + P&L] | [safety btn] | [lots control]
+            // ── mb-top
             Row(
                 Modifier.fillMaxWidth()
                     .border(width = 0.dp, color = Border, shape = RoundedCornerShape(0.dp))
@@ -226,7 +221,6 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // Left: strike number + P&L inline (Go: mb-strike + mb-pnl)
                 Row(verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     if (selRow != null) {
@@ -251,7 +245,6 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
                     )
                 }
 
-                // Center: safety btn (Go: .safety-btn.live / .safety-btn.locked)
                 Box(
                     Modifier.clip(RoundedCornerShape(6.dp))
                         .background(if (locked) RedDim else GreenDim)
@@ -269,7 +262,6 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
                     )
                 }
 
-                // Right: lots control (Go: mb-lots-group)
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -307,10 +299,9 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
                     modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 2.dp))
             }
 
-            // ── mb-btns: 2×2 grid matching Go's grid-template-columns:1fr 1fr
-            // Row 1: BUY CE | SELL CE
+            // ── Row 1: BUY CE | SELL CE
             Row(
-                Modifier.fillMaxWidth().padding(horizontal = 10.dp, top = 10.dp),
+                Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp, top = 10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 MbActionBtn("BUY CE", isBuy = true, enabled = hasCe && !locked && !orderBusy,
@@ -333,10 +324,10 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
                 }
             }
 
-            // Row 2: BUY PE | SELL PE
+            // ── Row 2: BUY PE | SELL PE
             Row(
                 Modifier.fillMaxWidth()
-                    .padding(horizontal = 10.dp, top = 10.dp, bottom = 10.dp),
+                    .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 MbActionBtn("BUY PE", isBuy = true, enabled = hasPe && !locked && !orderBusy,
@@ -361,7 +352,7 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
 
             HorizontalDivider(color = Border, thickness = 1.dp)
 
-            // ── Close All + Day P&L (bonus strip — useful for quick position exit)
+            // ── Close All + Day P&L
             val openPos = st.positions.filter { it.netQty != 0 }
             Row(
                 Modifier.fillMaxWidth().background(Bg3)
@@ -385,7 +376,7 @@ fun ScalperScreen(vm: AppViewModel, st: AppUiState) {
     }
 }
 
-// ── Chain row item — CE (green tint) | Strike | PE (red tint)
+// ── Chain row item
 @Composable
 private fun ChainRowItem(
     row: ChainRow,
@@ -406,7 +397,6 @@ private fun ChainRowItem(
             .padding(vertical = 7.dp, horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // CE (green tint bg)
         Box(
             Modifier.weight(2f).clip(RoundedCornerShape(4.dp))
                 .background(GreenDim).padding(vertical = 3.dp),
@@ -419,7 +409,6 @@ private fun ChainRowItem(
             )
         }
 
-        // Strike
         Column(Modifier.weight(1.4f), horizontalAlignment = Alignment.CenterHorizontally) {
             if (row.isAtm) Text("ATM", color = Blue, fontSize = 7.sp, fontWeight = FontWeight.Bold)
             Text("%.0f".format(row.strike),
@@ -429,7 +418,6 @@ private fun ChainRowItem(
                 textAlign = TextAlign.Center)
         }
 
-        // PE (red tint bg)
         Box(
             Modifier.weight(2f).clip(RoundedCornerShape(4.dp))
                 .background(RedDim).padding(vertical = 3.dp),
@@ -444,7 +432,7 @@ private fun ChainRowItem(
     }
 }
 
-// ── Mobile action button — matches Go's .mb-action-btn style
+// ── Mobile action button
 @Composable
 private fun MbActionBtn(
     label: String,
