@@ -58,7 +58,6 @@ fun MainScreen(vm: AppViewModel, st: AppUiState) {
                                 color = if (selected) Txt else TxtMuted)
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIndicatorColor = Color(0xFF1E1E1E),
                             indicatorColor = Color(0xFF1E1E1E),
                         ),
                     )
@@ -81,7 +80,6 @@ fun MainScreen(vm: AppViewModel, st: AppUiState) {
 // ── Header — matches Go's hdr: [⚡ AKATSUKI] ... [clock] [user] [● Live/Offline] ──
 @Composable
 private fun AkatsukiHeader(st: AppUiState) {
-    // Live clock — ticks every second matching Go's clockIv
     var clock by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
         val fmt = DateTimeFormatter.ofPattern("HH:mm:ss")
@@ -101,7 +99,6 @@ private fun AkatsukiHeader(st: AppUiState) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // Left: ⚡ AKATSUKI
         Row(verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("⚡", fontSize = 18.sp)
@@ -111,7 +108,6 @@ private fun AkatsukiHeader(st: AppUiState) {
                 letterSpacing = 1.sp)
         }
 
-        // Right: clock + greeting + status pill
         Row(verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             if (clock.isNotEmpty()) {
@@ -121,7 +117,6 @@ private fun AkatsukiHeader(st: AppUiState) {
                 Text(st.greetingName.take(12), color = TxtSec,
                     fontSize = 11.sp, fontWeight = FontWeight.Medium)
             }
-            // HSM status pill: Live (green) / Offline (red)
             Row(
                 Modifier.clip(RoundedCornerShape(99.dp))
                     .background(if (st.hsmConnected) GreenDim else RedDim)
